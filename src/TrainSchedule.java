@@ -69,7 +69,7 @@ public class TrainSchedule {
     }
 
 
-    private boolean deleteTrain(String name, int hours, int minutes, String dis) {
+    public boolean deleteTrain(String name, int hours, int minutes, String dis) {
         train train = new train(name, hours, minutes, dis);
         if (schedule.containsValue(train)) {
             schedule.entrySet().removeIf(entry -> entry.getValue().equals(train));
@@ -136,6 +136,7 @@ public class TrainSchedule {
         }
         return list;
     }
+
 
 
 

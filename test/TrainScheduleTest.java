@@ -54,6 +54,14 @@ public class TrainScheduleTest {
     }
 
 
+    @Test
+    public void deleteTrain (){
+        TrainSchedule train = new TrainSchedule();
+        train.addNew("Вологда", 10, 30, "Вологда 1");
+        assertTrue(train.deleteTrain("Вологда",10,30,"Вологда 1"));
+    }
+
+
 
 
 }
