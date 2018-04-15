@@ -29,6 +29,10 @@ public class TrainSchedule {
             return 60 * hours + minutes;
         }
 
+        private String getName() {
+            return name;
+        }
+
 
 
     }
