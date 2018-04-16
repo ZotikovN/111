@@ -29,9 +29,12 @@ public class TrainSchedule {
             return 60 * hours + minutes;
         }
 
-        private String getName() {
+        public String getName() {
             return name;
         }
+
+
+
 
 
 
@@ -76,10 +79,10 @@ public class TrainSchedule {
     public boolean deleteTrain(String name, int hours, int minutes, String dis) {
         train train = new train(name, hours, minutes, dis);
         if (schedule.containsValue(train)) {
-            schedule.entrySet().removeIf(entry -> entry.getValue().equals(train));
+            schedule.entrySet().removeIf(Entry -> Entry.equals(train));
             return true;
         }
-        throw  new Error("Такой поезд не найден");
+        return false;
     }
 
 
@@ -127,19 +130,17 @@ public class TrainSchedule {
     }
 
 
-    public List<train> searchTrain(String name, int hours, int minutes, String dis) {
-        if (!checkAll(name, hours, minutes, dis)) {
+    public List<String> searchTrain(int hours, int minutes) {
+        if (!checkTime(hours, minutes)) {
             throw new Error("Неверный формат ввода");
         }
-        train train = new train(name, hours, minutes, dis);
         this.time = 60 * hours + minutes;
         int trainTime;
-        List<train> list = new ArrayList<>();
-        Set <Map.Entry<String, train>> newschedule = this.schedule.entrySet();
-        for (Map.Entry<String, train> thisSchedule : newschedule) {
-            trainTime = train.getTime();
-            if (this.time < trainTime) {
-                list.add(thisSchedule.getValue());
+        List<String> list = new ArrayList<>();
+        for (Map.Entry<String, train> thisSchedule : schedule.entrySet()) {
+            trainTime = thisSchedule.getValue().getTime();
+            if (this.time <= trainTime) {
+                list.add(thisSchedule.getValue().toString());
             }
         }
         return list;

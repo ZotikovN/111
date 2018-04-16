@@ -11,8 +11,9 @@ public class TrainScheduleTest {
     @Test
     public void addNew() {
         TrainSchedule train = new TrainSchedule();
+        train.addNew("Санкт-Петербург", 9, 10, "Санкт-Петербург");
         train.addNew("Вологда", 10, 30, "Вологда 1");
-        assertEquals(("Вологда, 10:30, Вологда 1"), train.searchTrain("Вологда", 10,30, "Вологда 1").toString());
+        assertEquals(("[Вологда, 10:30, Вологда 1]"), train.searchTrain(10, 30).toString());
     }
 
 
@@ -76,6 +77,13 @@ public class TrainScheduleTest {
         TrainSchedule train = new TrainSchedule();
         train.addNew("Новгород", 10, 30, "Новгород");
         assertTrue(train.deleteTrain("Новгород",10,30,"Новгород"));
+    }
+
+    @Test
+    public void deleteTrain1 (){
+        TrainSchedule train = new TrainSchedule();
+        train.addNew("Новгород", 10, 30, "Новгород");
+        assertFalse(train.deleteTrain("Москва",11,50,"Москва"));
     }
 
 
