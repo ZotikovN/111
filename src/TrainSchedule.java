@@ -79,7 +79,7 @@ public class TrainSchedule {
             schedule.entrySet().removeIf(entry -> entry.getValue().equals(train));
             return true;
         }
-        return false;
+        throw  new Error("Такой поезд не найден");
     }
 
 
@@ -127,34 +127,20 @@ public class TrainSchedule {
     }
 
 
-    public ArrayList<String> searchTrainByDis(String dis) {
-        if (!checkDistanation(dis)) {
+    public List<train> searchTrain(String name, int hours, int minutes, String dis) {
+        if (!checkAll(name, hours, minutes, dis)) {
             throw new Error("Неверный формат ввода");
         }
-        ArrayList<String> list = new ArrayList<>();
-        Set<Map.Entry<String, train>> info = this.schedule.entrySet();
-        for (Map.Entry<String, train> thisInfo : info) {
-            String thisDistanation = thisInfo.getValue().getDis();
-            if (thisDistanation.equals(dis))
-                list.add(thisInfo.getKey());
-        }
-        return list;
-    }
-
-
-
-
-    public ArrayList<String> searchTrainByTime(int hours, int minutes) {
-        if (!checkTime(hours, minutes)) {
-            throw new Error("Неверный формат ввода");
-        }
+        train train = new train(name, hours, minutes, dis);
         this.time = 60 * hours + minutes;
-        ArrayList<String> list = new ArrayList<>();
-        Set<Map.Entry<String, train>> info = this.schedule.entrySet();
-        for (Map.Entry<String, train> thisInfo : info) {
-            int trainTime = thisInfo.getValue().getTime();
-            if (trainTime >= time)
-                list.add(thisInfo.getKey());
+        int trainTime;
+        List<train> list = new ArrayList<>();
+        Set <Map.Entry<String, train>> newschedule = this.schedule.entrySet();
+        for (Map.Entry<String, train> thisSchedule : newschedule) {
+            trainTime = train.getTime();
+            if (this.time < trainTime) {
+                list.add(thisSchedule.getValue());
+            }
         }
         return list;
     }

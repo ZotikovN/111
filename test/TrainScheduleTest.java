@@ -7,14 +7,12 @@ import static org.junit.Assert.*;
 
 public class TrainScheduleTest {
 
+
     @Test
     public void addNew() {
         TrainSchedule train = new TrainSchedule();
         train.addNew("Вологда", 10, 30, "Вологда 1");
-        train.addNew("Санкт-Петербург", 11, 20, "Вологда 1");
-        List<String> exp = new ArrayList<>();
-        Collections.addAll(exp,"Вологда", "Санкт-Петербург");
-        assertEquals(exp, train.searchTrainByDis("Вологда 1"));
+        assertEquals(("Вологда, 10:30, Вологда 1"), train.searchTrain("Вологда", 10,30, "Вологда 1").toString());
     }
 
 
@@ -61,11 +59,16 @@ public class TrainScheduleTest {
 
 
     @Test
-    public void searchTrainByTime() {
+    public void deleteStation1 (){
         TrainSchedule train = new TrainSchedule();
-        train.addNew("Вологда", 10, 30, "Вологда 1");
-        assertEquals("Вологда, 10:30, Вологда 1", train.searchTrainByTime(10, 20));
+        train.addNew("Москва", 9, 20, "Москва 1");
+        train.addStation("Москва", 9,20,"Москва 1", "Санкт-Петербург");
+        assertTrue(train.deleteStation("Москва"));
     }
+
+
+
+
 
 
     @Test
