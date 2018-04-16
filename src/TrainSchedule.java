@@ -25,7 +25,7 @@ public class TrainSchedule {
             return dis;
         }
 
-        public int getTime() {
+        private int getTime() {
             return 60 * hours + minutes;
         }
 
@@ -61,13 +61,13 @@ public class TrainSchedule {
 
     private boolean checkAll(String name, int hours, int minutes, String dis) {
         if (name == null) {
-            throw new Error("Неверный формат ввода названия поезда");
+            return false;
         }
         if (hours > 23 || hours < 0 || minutes > 59 || minutes < 0) {
-            throw new Error("Неверный формат ввода времени");
+            return false;
         }
         if (dis == null) {
-            throw new Error("Неверный формат ввода названия конечной станции");
+            return false;
         }
         return true;
     }
@@ -104,7 +104,7 @@ public class TrainSchedule {
 
     private boolean checkStation (String station) {
         if (station == null || station.equals("")) {
-            throw new Error("Неверный формат ввода названия станции");
+            return false;
         }
 
         return true;
@@ -149,7 +149,7 @@ public class TrainSchedule {
 
     private boolean checkTime(int hours, int minutes) {
         if (hours > 23 || hours < 0 || minutes > 59 || minutes < 0)
-            throw new Error("Неверный формат ввода времени");
+            return false;
         return true;
     }
 
@@ -157,7 +157,7 @@ public class TrainSchedule {
 
     private boolean checkDistanation(String distanation) {
         if (distanation == null) {
-            throw new Error("Неверный формат ввода");
+            return false;
         }
         return true;
     }
