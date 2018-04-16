@@ -69,9 +69,6 @@ public class TrainScheduleTest {
 
 
 
-
-
-
     @Test
     public void deleteTrain (){
         TrainSchedule train = new TrainSchedule();

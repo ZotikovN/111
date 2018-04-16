@@ -75,7 +75,6 @@ public class TrainSchedule {
         return true;
     }
 
-
     public boolean deleteTrain(String name, int hours, int minutes, String dis) {
         train train = new train(name, hours, minutes, dis);
         if (schedule.containsValue(train)) {
