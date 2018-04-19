@@ -3,22 +3,22 @@ import java.util.*;
 
 public class TrainSchedule {
 
-    public class train {
-        private String name;
+    public class info {
+
         private int hours;
         private int minutes;
         private String dis;
 
-        train(String name, int hours, int minutes, String dis) {
-            this.name = name;
+        info(int hours, int minutes, String dis) {
             this.hours = hours;
             this.minutes = minutes;
             this.dis = dis;
 
+
         }
 
         public String toString() {
-            return name + ", " + hours + ":" + minutes + ", " + dis;
+            return hours + ":" + minutes + ", " + dis;
         }
 
         private String getDis() {
@@ -29,23 +29,32 @@ public class TrainSchedule {
             return 60 * hours + minutes;
         }
 
-        public String getName() {
-            return name;
+        private ArrayList<String> stations = new ArrayList<String>();
+
+
+        private List<String> getStation() {
+            return stations;
         }
 
 
+        private void addStation(String station) {
+            if (!stations.contains(station)) {
+                stations.add(station);
+            }
+        }
 
-
-
-
+        void deleteStation(String station) {
+            stations.remove(station);
+        }
     }
 
 
 
-    private String station;
 
 
-    private Map<String, train> schedule = new HashMap<String, train>();
+
+
+    private Map<String, info> schedule = new HashMap<>();
 
 
 
@@ -57,8 +66,8 @@ public class TrainSchedule {
 
     public void addNew(String name, int hours, int minutes, String dis) {
         if (checkAll(name, hours, minutes, dis)) {
-            train train = new train(name, hours, minutes, dis);
-            schedule.put(station, train);
+            info info = new info(hours, minutes, dis);
+            schedule.put(name, info);
         }
     }
 
@@ -75,33 +84,28 @@ public class TrainSchedule {
         return true;
     }
 
-    public boolean deleteTrain(String name, int hours, int minutes, String dis) {
-        train train = new train(name, hours, minutes, dis);
-        if (schedule.containsValue(train)) {
-            schedule.entrySet().removeIf(Entry -> Entry.equals(train));
-            return true;
+    public void deleteTrain(String name) {
+        if (!schedule.containsKey(name)) {
+            throw new Error("Поезд не найден");
         }
-        return false;
+        schedule.remove(name);
     }
 
 
 
 
 
-    public void addStation (String name, int hours, int minutes, String dis, String station) {
-        if ((checkStation(station)) || (checkAll(name, hours, minutes, dis))) {
-            train train = new train(name, hours, minutes, dis);
-            if (this.schedule.containsValue(train)) {
-                if (this.schedule.containsKey(station)) {
-                    throw new Error("Этот поезд уже имеет такую станцию");
-                }
-                else deleteTrain(name, hours, minutes, dis);
-            }
-            train chkdtrain = new train(name, hours, minutes, dis);
-            station = station.replace(" ", "");
-            schedule.put(station, chkdtrain);
-
+    public void addStation (String name, String station) {
+        if (!checkStation(station)) {
+            throw new Error("Неверный формат ввода");
         }
+        if (!schedule.containsKey(name)) {
+            throw new Error("Поезд не найден");
+        }
+        if (schedule.get(name).getStation().contains(station)) {
+            throw new Error("Такая станция уже принадлежит этому поезду");
+        }
+        schedule.get(name).addStation(station);
     }
 
     private boolean checkStation (String station) {
@@ -112,38 +116,23 @@ public class TrainSchedule {
         return true;
     }
 
-    public boolean deleteStation(String station) {
-        if (checkStation(station) || this.schedule.containsKey(station)) {
-            this.schedule.remove(station);
-            return true;
-        }
-        return false;
-    }
-
-
-    public Optional<train> searchTrainByStation(String station) {
-        if (checkStation(station) || schedule.containsKey(station)) {
-            return Optional.ofNullable(schedule.get(station));
-        }
-        return Optional.empty();
-    }
-
-
-    public List<String> searchTrain(int hours, int minutes) {
-        if (!checkTime(hours, minutes)) {
+    public void deleteStation(String name, String station) {
+        if (checkStation(station)) {
             throw new Error("Неверный формат ввода");
         }
-        this.time = 60 * hours + minutes;
-        int trainTime;
-        List<String> list = new ArrayList<>();
-        for (Map.Entry<String, train> thisSchedule : schedule.entrySet()) {
-            trainTime = thisSchedule.getValue().getTime();
-            if (this.time <= trainTime) {
-                list.add(thisSchedule.getValue().toString());
-            }
+        if (!schedule.containsKey(name)) {
+            throw new Error("Поезд не найден");
         }
-        return list;
+        if (!schedule.get(name).getStation().contains(station)) {
+            throw new Error("Станция не найдена");
+        }
+        schedule.get(name).deleteStation(station);
     }
+
+
+
+
+
 
 
 
@@ -160,6 +149,25 @@ public class TrainSchedule {
             return false;
         }
         return true;
+    }
+
+
+
+    public List<String> searchTrain(int hours, int minutes, String dis) {
+        if (!checkTime(hours, minutes) || !checkDistanation(dis)) {
+            throw new Error("Неверный формат ввода");
+        }
+        this.time = 60 * hours + minutes;
+        int trainTime;
+        List<String> list = new ArrayList<>();
+        for (info info : schedule.values()) {
+            trainTime = info.getTime();
+            if (this.time <= trainTime || info.stations.contains(dis)
+        || Objects.equals(dis, info.dis)) {
+                list.add(info.toString());
+            }
+        }
+        return list;
     }
 
 
