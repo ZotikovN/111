@@ -4,12 +4,13 @@ import java.util.*;
 public class TrainSchedule {
 
     public class info {
-
+        private String name;
         private int hours;
         private int minutes;
         private String dis;
 
-        info(int hours, int minutes, String dis) {
+        info(String name, int hours, int minutes, String dis) {
+            this.name = name;
             this.hours = hours;
             this.minutes = minutes;
             this.dis = dis;
@@ -18,7 +19,7 @@ public class TrainSchedule {
         }
 
         public String toString() {
-            return hours + ":" + minutes + ", " + dis;
+            return "|" + name + ", " + hours + ":" + minutes + "|";
         }
 
         private String getDis() {
@@ -29,7 +30,7 @@ public class TrainSchedule {
             return 60 * hours + minutes;
         }
 
-        private ArrayList<String> stations = new ArrayList<String>();
+        private ArrayList<String> stations = new ArrayList<>();
 
 
         private List<String> getStation() {
@@ -66,19 +67,19 @@ public class TrainSchedule {
 
     public void addNew(String name, int hours, int minutes, String dis) {
         if (checkAll(name, hours, minutes, dis)) {
-            info info = new info(hours, minutes, dis);
+            info info = new info(name, hours, minutes, dis);
             schedule.put(name, info);
         }
     }
 
     private boolean checkAll(String name, int hours, int minutes, String dis) {
-        if (name == null) {
+        if (name == null || name.equals("")) {
             return false;
         }
         if (hours > 23 || hours < 0 || minutes > 59 || minutes < 0) {
             return false;
         }
-        if (dis == null) {
+        if (dis == null || dis.equals("")) {
             return false;
         }
         return true;
@@ -117,9 +118,6 @@ public class TrainSchedule {
     }
 
     public void deleteStation(String name, String station) {
-        if (checkStation(station)) {
-            throw new Error("Неверный формат ввода");
-        }
         if (!schedule.containsKey(name)) {
             throw new Error("Поезд не найден");
         }
@@ -144,8 +142,8 @@ public class TrainSchedule {
 
 
 
-    private boolean checkDistanation(String distanation) {
-        if (distanation == null) {
+    private boolean checkDistanation(String dis) {
+        if (dis == null || dis.equals("")) {
             return false;
         }
         return true;
@@ -162,8 +160,8 @@ public class TrainSchedule {
         List<String> list = new ArrayList<>();
         for (info info : schedule.values()) {
             trainTime = info.getTime();
-            if (this.time <= trainTime || info.stations.contains(dis)
-        || Objects.equals(dis, info.dis)) {
+            if (this.time <= trainTime && (info.stations.contains(dis)
+        || Objects.equals(dis, info.dis))) {
                 list.add(info.toString());
             }
         }
