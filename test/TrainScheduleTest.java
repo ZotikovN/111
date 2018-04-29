@@ -15,7 +15,10 @@ public class TrainScheduleTest {
         train.addNew("Вологда", 10, 30, "Вологда 1");
         train.addNew("Москва",11,20,"Москва");
         train.addStation("Вологда","Санкт-Петербург");
-        assertEquals("[|Вологда, 10:30|, |Санкт-Петербург, 9:10|]", train.searchTrain(9,10,"Санкт-Петербург").toString());
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("|Вологда, 10:30|");
+        expected.add("|Санкт-Петербург, 9:10|");
+        assertEquals(expected, train.searchTrain(9,10,"Санкт-Петербург"));
     }
 
 
@@ -26,7 +29,9 @@ public class TrainScheduleTest {
         train.addNew("Вологда", 8, 15, "Вологда 1");
         train.addNew("Москва",11,20,"Москва");
         train.addStation("Вологда","Санкт-Петербург");
-        assertEquals("[|Санкт-Петербург, 9:10|]", train.searchTrain(9,10,"Санкт-Петербург").toString());
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("|Санкт-Петербург, 9:10|");
+        assertEquals(expected, train.searchTrain(9,10,"Санкт-Петербург"));
     }
 
 
@@ -36,9 +41,11 @@ public class TrainScheduleTest {
         train.addNew("Санкт-Петербург", 9, 10, "Санкт-Петербург");
         train.addStation("Санкт-Петербург","Новгород");
         train.addStation("Санкт-Петербург","Омск");
-        assertEquals("[|Санкт-Петербург, 9:10|]", train.searchTrain(7,30,"Омск").toString());
-        assertEquals("[|Санкт-Петербург, 9:10|]", train.searchTrain(7,30,"Новгород").toString());
-        assertEquals("[|Санкт-Петербург, 9:10|]", train.searchTrain(7,30,"Санкт-Петербург").toString());
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("|Санкт-Петербург, 9:10|");
+        assertEquals(expected, train.searchTrain(7,30,"Омск"));
+        assertEquals(expected, train.searchTrain(7,30,"Новгород"));
+        assertEquals(expected, train.searchTrain(7,30,"Санкт-Петербург"));
     }
 
 
@@ -50,9 +57,13 @@ public class TrainScheduleTest {
         train.addNew("Вологда", 10, 30, "Вологда 1");
         train.addNew("Москва",11,20,"Москва");
         train.addStation("Москва","Санкт-Петербург");
-        assertEquals("[|Москва, 11:20|, |Санкт-Петербург, 9:10|]", train.searchTrain(9,10,"Санкт-Петербург").toString());
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("|Москва, 11:20|");
+        expected.add("|Санкт-Петербург, 9:10|");
+        assertEquals(expected, train.searchTrain(9,10,"Санкт-Петербург"));
         train.deleteStation("Москва","Санкт-Петербург");
-        assertEquals("[|Санкт-Петербург, 9:10|]", train.searchTrain(9,10,"Санкт-Петербург").toString());
+        expected.remove("|Москва, 11:20|");
+        assertEquals(expected, train.searchTrain(9,10,"Санкт-Петербург"));
     }
 
 
@@ -66,9 +77,13 @@ public class TrainScheduleTest {
         train.addNew("Новгород", 10, 30, "Новгород");
         train.addNew("Москва",11,20,"Москва");
         train.addStation("Москва","Новгород");
-        assertEquals("[|Москва, 11:20|, |Новгород, 10:30|]", train.searchTrain(8,10,"Новгород").toString());
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("|Москва, 11:20|");
+        expected.add("|Новгород, 10:30|");
+        assertEquals(expected, train.searchTrain(8,10,"Новгород"));
         train.deleteTrain("Москва");
-        assertEquals("[|Новгород, 10:30|]", train.searchTrain(8,10,"Новгород").toString());
+        expected.remove("|Москва, 11:20|");
+        assertEquals(expected, train.searchTrain(8,10,"Новгород"));
     }
 
 
